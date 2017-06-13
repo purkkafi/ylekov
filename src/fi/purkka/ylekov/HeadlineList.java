@@ -3,10 +3,10 @@ package fi.purkka.ylekov;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 public class HeadlineList {
 	
@@ -23,8 +23,8 @@ public class HeadlineList {
 		}
 	}
 	
-	public ArrayList<String> all() {
-		return new ArrayList<>(set);
+	public Set<String> all() {
+		return set;
 	}
 	
 	public void write(Path path) {

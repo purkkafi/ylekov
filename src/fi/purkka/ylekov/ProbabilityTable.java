@@ -1,10 +1,6 @@
 package fi.purkka.ylekov;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class ProbabilityTable {
 	
@@ -14,6 +10,7 @@ public class ProbabilityTable {
 	
 	public void update(String sentence) {
 		String[] words = sentence.split("\\s+");
+		
 		for(int i = 1; i < words.length; i++) {
 			String previous = words[i-1];
 			String current = words[i];
@@ -24,26 +21,55 @@ public class ProbabilityTable {
 		}
 	}
 	
-	public String generate() {
+	public String generate(HeadlineList list) {
 		int counter = 0;
 		
 		while(counter++ < 10000) {
 			String generated = tryGenerate();
 			int words = generated.split("\\s+").length;
-			if(words >= 5 && words <= 10) return generated;
+			if(words >= 5 && words <= 10) {
+				String headline = fixHeadline(generated);
+				if(list.all().contains("[ " + headline + " ]")) {
+					continue;
+				}
+				return headline;
+			}
 		}
 		
 		throw new AssertionError("Couldn't generate in 10000 tries");
 	}
 	
+	private static String fixHeadline(String headline) {
+		if(count(headline, '\"') % 2 != 0) {
+			if(!headline.endsWith("\"")) {
+				headline = headline + "\"";
+			} else {
+				if(headline.indexOf(": ") != -1) {
+					headline = headline.replace(": ", ": \"");
+				} else {
+					headline = "\"" + headline;
+				}
+			}
+		}
+		return headline;
+	}
+	
+	private static int count(String str, char c) {
+		int count = 0;
+		for(int i = 0; i < str.length(); i++) {
+			if(str.charAt(i) == c) count++;
+		}
+		return count;
+	}
+	
 	private String tryGenerate() {
 		StringBuilder sb = new StringBuilder();
 		
-		String word = randomKeyWeighted(table.get("!"));
+		String word = randomKeyWeighted(table.get("["));
 		while(true) {
 			sb.append(word + " ");
 			word = randomKeyWeighted(table.get(word));
-			if(word.equals(".")) break;
+			if(word.equals("]")) break;
 		}
 		
 		return sb.toString().trim();

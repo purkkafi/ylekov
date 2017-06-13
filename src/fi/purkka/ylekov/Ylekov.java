@@ -3,6 +3,7 @@ package fi.purkka.ylekov;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,14 +33,16 @@ public class Ylekov {
 		if(args[0].equals("generate")) {
 			int n = args.length == 2 ? Integer.parseInt(args[1]) : 1;
 			
-			List<String> headlines = HeadlineList.of(CACHE_FILE).all();
+			HeadlineList list = HeadlineList.of(CACHE_FILE);
+			List<String> headlines = new ArrayList<>(list.all());
 			ProbabilityTable table = new ProbabilityTable();
+			
 			for(String headline : headlines) {
 				table.update(headline);
 			}
 			
 			for(int i = 0; i < n; i++) {
-				System.out.println(table.generate());
+				System.out.println(table.generate(list));
 			}
 			System.exit(0);
 		}

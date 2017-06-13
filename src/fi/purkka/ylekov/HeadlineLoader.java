@@ -36,12 +36,11 @@ public class HeadlineLoader {
 			List<String> headlines = new ArrayList<>();
 			
 			while(matcher.find()) {
-				headlines.add("! " + matcher.group(1)
-						.replaceAll("&quot;", "")
-						.replaceAll("[^\\w\\såäöÅÄÖ-]", "")
-						.replaceAll("[\\s-]+", " ")
-						.trim()
-						.toLowerCase() + " .");
+				headlines.add("[ " + matcher.group(1)
+						.replaceAll("&quot;", "\"")
+						.replaceAll("”", "\"")
+						.replaceAll("[\\s]+", " ")
+						.trim() + " ]");
 			}
 			
 			return headlines;
