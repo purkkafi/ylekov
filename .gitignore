@@ -1,6 +1,8 @@
 bin/
 .project
 ylekov.jar
+secrets.py
 .classpath
 cached_headlines
 .settings/
+__pycache__
