@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import tweepy
 import subprocess
 import sys
