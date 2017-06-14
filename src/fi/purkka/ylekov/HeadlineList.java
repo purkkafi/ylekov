@@ -40,13 +40,17 @@ public class HeadlineList {
 			HeadlineList list = new HeadlineList();
 			
 			for(String line : Files.readAllLines(path)) {
-				list.append(line);
+				list.append(updateOldHeadline(line));
 			}
 			
 			return list;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	private static String updateOldHeadline(String string) {
+		return string.replace(" - ", " – ");
 	}
 	
 	public static HeadlineList of(List<String> strings) {
