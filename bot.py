@@ -17,11 +17,11 @@ api = tweepy.API(auth)
 bot = telegram.Bot(telegram_token)
 
 def updatecache():
-	subprocess.run(["java", "-jar", "ylekov.jar", "update"])
+	subprocess.Popen(["java", "-jar", "ylekov.jar", "update"]).wait()
 
 def getpost():
-	result = subprocess.run(["java", "-jar", "ylekov.jar", "generate"], stdout=subprocess.PIPE)
-	tweet = result.stdout.decode("utf-8").strip()
+	result = subprocess.Popen(["java", "-jar", "ylekov.jar", "generate"], stdout=subprocess.PIPE).communicate()
+	tweet = result[0].decode("utf-8").strip()
 	return tweet
 
 def testbot():
