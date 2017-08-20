@@ -1,4 +1,4 @@
-A simple, dependency-free utility that generates Finnish headlines procedurally using data from [YLE Uutiset](http://yle.fi/uutiset), [Iltasanomat](http://is.fi) and [Iltalehti](http://iltalehti.fi). Also contains Python code for running a Twitter bot that posts a headline hourly.
+A simple, dependency-free utility that generates Finnish headlines procedurally using data from [YLE Uutiset](http://yle.fi/uutiset), [Iltasanomat](http://is.fi) and [Iltalehti](http://iltalehti.fi). Also contains Python code for running Twitter and Telegram bots that post a headline hourly.
 
 ## Building
 
@@ -28,4 +28,4 @@ and it will print out a sample headline. To run the bot, run
 
     ./bot.py run
 
-Note that the bot requires `tweepy`. Store the required keys and tokens in a file called `secrets.py`.
+Note that the bot requires `tweepy` and `python-telegram-bot`. Store the required keys and tokens in a file called `secrets.py`.

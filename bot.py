@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import tweepy
+import telegram
 import subprocess
 import sys
 from time import sleep
@@ -13,12 +14,14 @@ auth.set_access_token(access_token, access_secret)
 global api
 api = tweepy.API(auth)
 
+bot = telegram.Bot(telegram_token)
+
 def updatecache():
-	subprocess.run(["java", "-jar", "ylekov.jar", "update"])
+	subprocess.Popen(["java", "-jar", "ylekov.jar", "update"]).wait()
 
 def getpost():
-	result = subprocess.run(["java", "-jar", "ylekov.jar", "generate"], stdout=subprocess.PIPE)
-	tweet = result.stdout.decode("utf-8").strip()
+	result = subprocess.Popen(["java", "-jar", "ylekov.jar", "generate"], stdout=subprocess.PIPE).communicate()
+	tweet = result[0].decode("utf-8").strip()
 	return tweet
 
 def testbot():
@@ -28,7 +31,9 @@ def runbot():
 	while True:
 		try:
 			updatecache()
-			api.update_status(getpost())
+			post = getpost()
+			api.update_status(post)
+			bot.send_message(telegram_channel, post, disable_web_page_preview=True)
 			sleep(60*60)
 		except:
 			print("Error: ", sys.exc_info()[0])
