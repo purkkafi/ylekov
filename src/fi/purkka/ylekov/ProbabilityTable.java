@@ -27,7 +27,7 @@ public class ProbabilityTable {
 		while(counter++ < 10000) {
 			String generated = tryGenerate();
 			int words = generated.split("\\s+").length;
-			if(words >= 5 && words <= 10) {
+			if(words >= 5 && generated.length() < 130) {
 				String headline = fixHeadline(generated);
 				if(list.all().contains("[ " + headline + " ]")) {
 					continue;
