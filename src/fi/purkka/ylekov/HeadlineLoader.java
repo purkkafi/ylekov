@@ -47,7 +47,7 @@ public class HeadlineLoader {
 			List<String> headlines = new ArrayList<>();
 			
 			while(matcher.find()) {
-				headlines.add("[" + formatHeadline(matcher.group(1)) + "]");
+				headlines.add("[ " + formatHeadline(matcher.group(1)) + " ]");
 			}
 			
 			System.out.println("Loaded " + headlines.size() + " from " + loadUrl);
@@ -72,9 +72,12 @@ public class HeadlineLoader {
 				.replace("&#8221;", "\"")
 				.replace("&#034;", "\"")
 				.replace("&#8211;", "–")
+				.replace("&#150;", "–")
 				.replace("”", "\"")
 				.replace("''", "\"")
 				.replace(" - ", " – ")
+				.replace("\"–", "\" –")
+				.replace("–", "–")
 				.replaceAll("[\\s]+", " ")
 				.trim();
 	}

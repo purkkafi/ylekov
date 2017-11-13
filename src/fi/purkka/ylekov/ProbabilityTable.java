@@ -30,7 +30,7 @@ public class ProbabilityTable {
 			int words = generated.split("\\s+").length;
 			
 			if(words >= 5 && generated.length() < 130) {
-				String headline = fixHeadline(generated);
+				String headline = fixQuotes(generated);
 				
 				// Reject headlines with too many em dashes
 				long emDashes = headline.chars().filter(c -> c == '–').count();
@@ -52,19 +52,52 @@ public class ProbabilityTable {
 		throw new AssertionError("Couldn't generate in 10000 tries");
 	}
 	
-	private static String fixHeadline(String headline) {
-		if(count(headline, '\"') % 2 != 0) {
-			if(!headline.endsWith("\"")) {
-				headline = headline + "\"";
-			} else {
-				if(headline.indexOf(": ") != -1) {
-					headline = headline.replace(": ", ": \"");
+	private static String fixQuotes(String headline) {
+		while(count(headline, '\"') % 2 != 0) {
+			if(headline.endsWith("\"")) {
+				if(headline.contains(": ")) {
+					headline = headline.replaceFirst(": ", ": \"");
+				} else if(headline.contains("– ")) {
+					headline = headline.replaceFirst("– ", "– \"");
 				} else {
 					headline = "\"" + headline;
 				}
+				
+			} else if(headline.startsWith("\"")) {
+				if(headline.contains(" –")) {
+					headline = headline.replaceFirst(" –", "\" –");
+				} else if(headline.contains(",")) {
+					headline = headline.replaceFirst(",", "\",");
+				} else {
+					headline = headline + "\"";
+				}
+				
+			} else if(headline.contains(": \"") || headline.contains("– \"")
+					|| headline.contains(" \"")) {
+				headline = headline + "\"";
+				
+			} else if(headline.contains("\" –")) {
+				headline = "\"" + headline;
+				
+			} else if(headline.contains("\",")) {
+				if(headline.contains(": ") && isBefore(headline, ": ", "\", ")) {
+					headline = headline.replaceFirst(": ", ": \"");
+				} else if(headline.contains("– ") && isBefore(headline, "– ", "\", ")) {
+					headline = headline.replace("– ", "– \"");
+				} else {
+					headline = "\"" + headline;
+				}
+			} else {
+				System.err.println("Unable to fix quotes for [" + headline + "]");
+				return headline;
 			}
+			
 		}
 		return headline;
+	}
+	
+	private static boolean isBefore(String string, String first, String second) {
+		return string.indexOf(first) < string.indexOf(second);
 	}
 	
 	private static int count(String str, char c) {
