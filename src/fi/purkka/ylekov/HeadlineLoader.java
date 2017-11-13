@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public class HeadlineLoader {
 	
+	private final static String URL_HYMY = "https://hymy.fi/feed/";
+	private final static String URL_MTV = "https://www.mtv.fi/api/feed/rss/uutiset_uusimmat";
 	private final static String URL_SEISKA = "https://www.seiska.fi/all.rss";
 	private final static String URL_HS = "https://www.hs.fi/rss/tuoreimmat.xml";
 	private final static String URL_IS = "https://www.is.fi/rss/tuoreimmat.xml";
@@ -24,6 +26,8 @@ public class HeadlineLoader {
 	
 	public static List<String> loadHeadlines() {
 		List<String> all = new ArrayList<>();
+		all.addAll(loadHeadlines(URL_HYMY, PATTERN_ITEM_TITLE));
+		all.addAll(loadHeadlines(URL_MTV, PATTERN_ITEM_TITLE));
 		all.addAll(loadHeadlines(URL_SEISKA, PATTERN_ITEM_TITLE));
 		all.addAll(loadHeadlines(URL_HS, PATTERN_TITLE_CDATA));
 		all.addAll(loadHeadlines(URL_IS, PATTERN_TITLE_CDATA));
@@ -43,28 +47,35 @@ public class HeadlineLoader {
 			List<String> headlines = new ArrayList<>();
 			
 			while(matcher.find()) {
-				headlines.add("[ " + matcher.group(1)
-						.replace("&quot;", "\"")
-						.replace("&#246;", "ö")
-						.replace("&#228;", "ä")
-						.replace("&#229;", "Å")
-						.replace("&#214;", "Ö")
-						.replace("&#196;", "Ä")
-						.replace("&#197;", "Å")
-						.replace("&#8221;", "\"")
-						.replace("”", "\"")
-						.replace("''", "\"")
-						.replace(" - ", " – ")
-						.replaceAll("[\\s]+", " ")
-						.trim() + " ]");
+				headlines.add("[" + formatHeadline(matcher.group(1)) + "]");
 			}
 			
 			System.out.println("Loaded " + headlines.size() + " from " + loadUrl);
 			return headlines;
 		} catch (IOException e) {
-			System.out.println("Failed to load " + loadUrl + ": " + e.toString());
+			System.err.println("Failed to load " + loadUrl);
+			e.printStackTrace();
 		}
 		
 		return Collections.EMPTY_LIST;
+	}
+	
+	public static String formatHeadline(String headline) {
+		return headline
+				.replace("&quot;", "\"")
+				.replace("&#246;", "ö")
+				.replace("&#228;", "ä")
+				.replace("&#229;", "Å")
+				.replace("&#214;", "Ö")
+				.replace("&#196;", "Ä")
+				.replace("&#197;", "Å")
+				.replace("&#8221;", "\"")
+				.replace("&#034;", "\"")
+				.replace("&#8211;", "–")
+				.replace("”", "\"")
+				.replace("''", "\"")
+				.replace(" - ", " – ")
+				.replaceAll("[\\s]+", " ")
+				.trim();
 	}
 }

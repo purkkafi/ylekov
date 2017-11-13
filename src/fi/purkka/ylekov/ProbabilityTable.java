@@ -24,14 +24,27 @@ public class ProbabilityTable {
 	public String generate(HeadlineList list) {
 		int counter = 0;
 		
+		generate:
 		while(counter++ < 10000) {
 			String generated = tryGenerate();
 			int words = generated.split("\\s+").length;
+			
 			if(words >= 5 && generated.length() < 130) {
 				String headline = fixHeadline(generated);
-				if(list.all().contains("[ " + headline + " ]")) {
-					continue;
+				
+				// Reject headlines with too many em dashes
+				long emDashes = headline.chars().filter(c -> c == '–').count();
+				if(emDashes > 1) {
+					continue generate;
 				}
+				
+				// Reject headlines that are substrings of stored ones
+				for(String stored : list.all()) {
+					if(stored.contains(headline)) {
+						continue generate;
+					}
+				}
+				
 				return headline;
 			}
 		}

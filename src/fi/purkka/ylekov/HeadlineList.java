@@ -50,7 +50,7 @@ public class HeadlineList {
 	}
 	
 	private static String updateOldHeadline(String string) {
-		return string.replace(" - ", " – ");
+		return HeadlineLoader.formatHeadline(string);
 	}
 	
 	public static HeadlineList of(List<String> strings) {
