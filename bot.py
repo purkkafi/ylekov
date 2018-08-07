@@ -60,6 +60,7 @@ def runbot():
 mode = sys.argv[1]
 
 if mode == "run":
+	is_debug = False
 	runbot()
 elif mode == "test":
 	is_debug = True
