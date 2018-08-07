@@ -66,8 +66,6 @@ public class ProbabilityTable {
 			} else if(headline.startsWith("\"")) {
 				if(headline.contains(" –")) {
 					headline = headline.replaceFirst(" –", "\" –");
-				} else if(headline.contains(",")) {
-					headline = headline.replaceFirst(",", "\",");
 				} else {
 					headline = headline + "\"";
 				}
