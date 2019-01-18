@@ -1,4 +1,4 @@
-A simple, dependency-free utility that generates Finnish headlines procedurally using data from [YLE Uutiset](http://yle.fi/uutiset), [Iltasanomat](http://is.fi) and [Iltalehti](http://iltalehti.fi). Also contains Python code for running Twitter and Telegram bots that post a headline hourly.
+A simple, dependency-free utility that generates Finnish headlines procedurally using data from [YLE Uutiset](http://yle.fi/uutiset), [Iltasanomat](http://is.fi), [Iltalehti](http://iltalehti.fi), [HS](https://www.hs.fi/), [Hymy](https://hymy.fi), [MTV](https://www.mtv.fi) and [Seiska](https://www.seiska.fi/), . Also contains Python code for running Twitter and Telegram bots that post a headline hourly.
 
 ## Building
 
