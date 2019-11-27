@@ -44,6 +44,7 @@ public class Ylekov {
 			for(int i = 0; i < n; i++) {
 				System.out.println(table.generate(list));
 			}
+			
 			System.exit(0);
 		}
 		
