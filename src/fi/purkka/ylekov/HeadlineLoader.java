@@ -29,7 +29,7 @@ public class HeadlineLoader {
 			Pattern.compile("\\<item\\>\\n\\s*\\<title\\>(.*)\\<\\/title\\>");
 	
 	private final static Pattern PATTERN_SEISKA =
-			Pattern.compile("\\<span\\>(.{17,})\\<\\/span\\>");
+			Pattern.compile("\\<div class=\"dre-item__alt-title--lg\"\\>(.*?)\\<\\/div\\>");
 	
 	public static List<String> loadHeadlines() {
 		List<String> all = new ArrayList<>();
@@ -69,6 +69,9 @@ public class HeadlineLoader {
 	}
 	
 	public static String formatHeadline(String headline) {
+		if(headline.startsWith("<p>") && headline.endsWith("</p>")) {
+			headline = headline.substring(3, headline.length()-4);
+		}
 		return headline
 				.replace("&quot;", "\"")
 				.replace("&#246;", "ö")
