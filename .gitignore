@@ -1,4 +1,5 @@
 bin/
+jars/
 .project
 ylekov.jar
 secrets.py

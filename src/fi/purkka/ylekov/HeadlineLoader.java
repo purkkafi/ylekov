@@ -11,6 +11,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.unbescape.xml.XmlEscape;
+
 public class HeadlineLoader {
 	
 	private final static String URL_HYMY = "https://hymy.fi/feed/";
@@ -72,18 +74,18 @@ public class HeadlineLoader {
 		if(headline.startsWith("<p>") && headline.endsWith("</p>")) {
 			headline = headline.substring(3, headline.length()-4);
 		}
-		return headline
-				.replace("&quot;", "\"")
-				.replace("&#246;", "ö")
-				.replace("&#228;", "ä")
-				.replace("&#229;", "Å")
-				.replace("&#214;", "Ö")
-				.replace("&#196;", "Ä")
-				.replace("&#197;", "Å")
-				.replace("&#8221;", "\"")
-				.replace("&#034;", "\"")
-				.replace("&#8211;", "–")
-				.replace("&#150;", "–")
+		return XmlEscape.unescapeXml(headline)
+				//.replace("&quot;", "\"")
+				//.replace("&#246;", "ö")
+				//.replace("&#228;", "ä")
+				//.replace("&#229;", "Å")
+				//.replace("&#214;", "Ö")
+				//.replace("&#196;", "Ä")
+				//.replace("&#197;", "Å")
+				//.replace("&#8221;", "\"")
+				//.replace("&#034;", "\"")
+				//.replace("&#8211;", "–")
+				//.replace("&#150;", "–")
 				.replace("\u00AD", "")
 				.replace("\u00A0", "")
 				.replace("”", "\"")

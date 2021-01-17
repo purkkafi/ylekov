@@ -1,2 +1,6 @@
+Python:
 tweepy 
 python-telegram-bot
+
+Java:
+https://github.com/unbescape/unbescape/

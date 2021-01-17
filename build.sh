@@ -1,2 +1,2 @@
-javac -sourcepath src -d bin src/fi/purkka/ylekov/Ylekov.java
-jar cfe ylekov.jar fi.purkka.ylekov.Ylekov -C bin/ .
+javac -sourcepath src -d bin -cp jars/* src/fi/purkka/ylekov/Ylekov.java
+jar cfm ylekov.jar MANIFEST.mf -C bin/ .

@@ -1,0 +1,3 @@
+Class-Path: jars/unbescape-1.1.6.RELEASE.jar
+Main-Class: fi.purkka.ylekov.Ylekov
+
