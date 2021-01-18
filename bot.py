@@ -5,6 +5,7 @@ import telegram
 import subprocess
 import sys
 import random
+import arrow
 from datetime import datetime
 from time import sleep
 from secrets import *
@@ -19,7 +20,7 @@ def update_cache():
     subprocess.Popen(["java", "-jar", "ylekov.jar", "update"]).wait()
 
 def get_post():
-    if datetime.now().hour == 18: # ylekov classic
+    if arrow.now('Europe/Helsinki').hour == 18: # ylekov classic
         with open("ylekov_classic.txt") as f:
             urls = f.read().split('\n')
         url = random.choice(urls)
