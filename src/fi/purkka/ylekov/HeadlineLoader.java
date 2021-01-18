@@ -2,6 +2,7 @@ package fi.purkka.ylekov;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -47,10 +48,8 @@ public class HeadlineLoader {
 	}
 	
 	private static List<String> loadHeadlines(String loadUrl, Pattern pattern) {
-		try {
-			URL url = new URL(loadUrl);
-			
-			String content = new BufferedReader(new InputStreamReader(url.openStream())).lines()
+		try(InputStream is = new URL(loadUrl).openStream()) {
+			String content = new BufferedReader(new InputStreamReader(is)).lines()
 					.collect(Collectors.joining("\n"));
 
 			Matcher matcher = pattern.matcher(content);
@@ -75,20 +74,10 @@ public class HeadlineLoader {
 			headline = headline.substring(3, headline.length()-4);
 		}
 		return XmlEscape.unescapeXml(headline)
-				//.replace("&quot;", "\"")
-				//.replace("&#246;", "ö")
-				//.replace("&#228;", "ä")
-				//.replace("&#229;", "Å")
-				//.replace("&#214;", "Ö")
-				//.replace("&#196;", "Ä")
-				//.replace("&#197;", "Å")
-				//.replace("&#8221;", "\"")
-				//.replace("&#034;", "\"")
-				//.replace("&#8211;", "–")
-				//.replace("&#150;", "–")
 				.replace("\u00AD", "")
 				.replace("\u00A0", "")
 				.replace("”", "\"")
+				.replace("“", "\"")
 				.replace("''", "\"")
 				.replace(" - ", " – ")
 				.replace("\"–", "\" –")
