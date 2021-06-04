@@ -6,6 +6,7 @@ import subprocess
 import sys
 import random
 import arrow
+import json
 from datetime import datetime
 from time import sleep
 from secrets import *
@@ -19,12 +20,15 @@ bot = telegram.Bot(telegram_token)
 def update_cache():
     subprocess.Popen(["java", "-jar", "ylekov.jar", "update"]).wait()
 
+def get_ylekov_classic():
+    with open("ylekov_classic.json") as f:
+        classic_posts = json.loads(f.read())
+    post = random.choice(classic_posts)
+    return { "twitter" : "klassinen ylekov " + post["url"], "telegram" : "klassinen ylekov:\n" + post["text"] }
+
 def get_post():
     if arrow.now('Europe/Helsinki').hour == 18: # ylekov classic
-        with open("ylekov_classic.txt") as f:
-            urls = f.read().split('\n')
-        url = random.choice(urls)
-        return "klassinen ylekov " + url
+        return get_ylekov_classic()
         
     else: # tavallinen ylekov
         result = subprocess.Popen(["java", "-jar", "ylekov.jar", "generate"], stdout=subprocess.PIPE).communicate()
@@ -60,8 +64,12 @@ def runbot():
         try_and_log(lambda: update_cache(), "update cache")
         post = try_and_log(lambda: get_post(), "generate post")
         
-        try_and_log(lambda: post_twitter(post), "post to Twitter: " + post)
-        try_and_log(lambda: post_telegram(post), "post to Telegram: " + post)
+        if isinstance(post, str):
+            try_and_log(lambda: post_twitter(post), "post to Twitter: " + post)
+            try_and_log(lambda: post_telegram(post), "post to Telegram: " + post)
+        else:
+            try_and_log(lambda: post_twitter(post["twitter"]), "post to Twitter: " + post["twitter"])
+            try_and_log(lambda: post_telegram(post["telegram"]), "post to Telegram: " + post["telegram"])
         
         sleep(60*60)
 
