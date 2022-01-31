@@ -32,7 +32,7 @@ public class HeadlineLoader {
 			Pattern.compile("\\<item\\>\\n\\s*\\<title\\>(.*)\\<\\/title\\>");
 	
 	private final static Pattern PATTERN_SEISKA =
-			Pattern.compile("\\<div class=\"dre-item__alt-title--lg\"\\>(.*?)\\<\\/div\\>");
+			Pattern.compile("dre-item__title\" itemprop=\"url\">(.+?)<\\/a>");
 	
 	public static List<String> loadHeadlines() {
 		List<String> all = new ArrayList<>();
