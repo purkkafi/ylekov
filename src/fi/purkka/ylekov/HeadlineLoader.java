@@ -17,7 +17,7 @@ import org.unbescape.xml.XmlEscape;
 public class HeadlineLoader {
 	
 	private final static String URL_HYMY = "https://hymy.fi/feed/";
-	private final static String URL_MTV = "https://www.mtv.fi/api/feed/rss/uutiset_uusimmat";
+	private final static String URL_MTV = "https://api.mtvuutiset.fi/mtvuutiset/api/feed/rss/uutiset_uusimmat";
 	private final static String URL_SEISKA = "https://www.seiska.fi/";
 	private final static String URL_HS = "https://www.hs.fi/rss/tuoreimmat.xml";
 	private final static String URL_IS = "https://www.is.fi/rss/tuoreimmat.xml";
@@ -26,13 +26,13 @@ public class HeadlineLoader {
 	private final static String URL_NYT = "https://www.hs.fi/rss/nyt.xml";
 	
 	private final static Pattern PATTERN_TITLE_CDATA =
-			Pattern.compile("\\<title\\>\\<!\\[CDATA\\[(.+)\\]\\]");
+			Pattern.compile("\\<title\\>\\<!\\[CDATA\\[(.+?)\\]\\]");
 	
 	private final static Pattern PATTERN_ITEM_TITLE =
 			Pattern.compile("\\<item\\>\\n\\s*\\<title\\>(.*)\\<\\/title\\>");
 	
 	private final static Pattern PATTERN_SEISKA =
-			Pattern.compile("dre-item__title\" itemprop=\"url\">(.+?)<\\/a>");
+			Pattern.compile("\\<h2.+\\>(.+)");
 	
 	public static List<String> loadHeadlines() {
 		List<String> all = new ArrayList<>();
