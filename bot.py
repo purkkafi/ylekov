@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import tweepy
+import nanoatp
 import telegram
 import subprocess
 import sys
@@ -11,14 +11,6 @@ from datetime import datetime
 from time import sleep
 from secrets import *
 
-auth = tweepy.OAuth1UserHandler(
-    consumer_key,
-    consumer_secret,
-    access_token,
-    access_secret
-);
-api = tweepy.API(auth)
-
 bot = telegram.Bot(telegram_token)
 
 def update_cache():
@@ -28,7 +20,7 @@ def get_ylekov_classic():
     with open("ylekov_classic.json") as f:
         classic_posts = json.loads(f.read())
     post = random.choice(classic_posts)
-    return { "twitter" : "klassinen ylekov " + post["url"], "telegram" : "klassinen ylekov:\n" + post["text"] }
+    return "klassinen ylekov:\n" + post["text"]
 
 def get_post():
     if arrow.now('Europe/Helsinki').hour == 18: # ylekov classic
@@ -39,11 +31,20 @@ def get_post():
         tweet = result[0].decode("utf-8").strip()
         return tweet
 
-def post_twitter(post):
+def post_bsky(post):
     if is_debug:
-        print("[TWITTER] " + post)
+        print("[BLUESKY] " + post)
     else:
-        api.update_status(post)
+        bsky = nanoatp.BskyAgent('https://bsky.social')
+        bsky.login(bsky_handle, bsky_password)
+        
+        rich_text = nanoatp.RichText(status)
+        rich_text.detectFacets(bsky)
+        
+        record = { 'text': rich_text.text, 'facets': rich_text.facets }
+        
+        bsky.post(record)
+        print('[BLUESKY] ', status)
 
 def post_telegram(post):
     if is_debug:
@@ -68,12 +69,8 @@ def runbot():
         try_and_log(lambda: update_cache(), "update cache")
         post = try_and_log(lambda: get_post(), "generate post")
         
-        if isinstance(post, str):
-            try_and_log(lambda: post_twitter(post), "post to Twitter: " + post)
-            try_and_log(lambda: post_telegram(post), "post to Telegram: " + post)
-        else:
-            try_and_log(lambda: post_twitter(post["twitter"]), "post to Twitter: " + post["twitter"])
-            try_and_log(lambda: post_telegram(post["telegram"]), "post to Telegram: " + post["telegram"])
+        try_and_log(lambda: post_bsky(post), "post to Bluesky: " + post)
+        try_and_log(lambda: post_telegram(post), "post to Telegram: " + post)
         
         sleep(60*60)
 
@@ -87,3 +84,4 @@ elif mode == "test":
     runbot()
 else:
     print("Invoke with 'run' or 'test'")
+
