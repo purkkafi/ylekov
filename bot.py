@@ -42,7 +42,7 @@ async def post_bsky(post):
         rich_text = nanoatp.RichText(post)
         rich_text.detectFacets(bsky)
         
-        record = { 'text': rich_text.text, 'facets': rich_text.facets }
+        record = { 'text': rich_text.text, 'facets': rich_text.facets, 'langs': ['fi'] }
         
         await bsky.post(record)
         print('[BLUESKY] ', post)
