@@ -46,6 +46,17 @@ public class ProbabilityTable {
 					}
 				}
 				
+				// Reject headlines that are substrings of stored ones from the first "|" onwards
+				if(generated.indexOf('|') != -1) {
+				    String compareTo = generated.substring(generated.indexOf('|'));
+				    
+				    for(String stored : list.all()) {
+				        if(stored.contains(compareTo)) {
+						    continue generate;
+					    }
+				    }
+				}
+				
 				return headline;
 			}
 		}
