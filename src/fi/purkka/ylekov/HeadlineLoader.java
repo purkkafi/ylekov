@@ -23,7 +23,6 @@ public class HeadlineLoader {
 	private final static String URL_IS = "https://www.is.fi/rss/tuoreimmat.xml";
 	private final static String URL_YLE = "https://feeds.yle.fi/uutiset/v1/recent.rss?publisherIds=YLE_UUTISET";
 	private final static String URL_IL = "https://www.iltalehti.fi/rss.xml";
-	private final static String URL_NYT = "https://www.hs.fi/rss/nyt.xml";
 	
 	private final static Pattern PATTERN_TITLE_CDATA =
 			Pattern.compile("\\<title\\>\\<!\\[CDATA\\[(.+?)\\]\\]");
@@ -37,13 +36,12 @@ public class HeadlineLoader {
 	public static List<String> loadHeadlines() {
 		List<String> all = new ArrayList<>();
 		all.addAll(loadHeadlines(URL_HYMY, PATTERN_ITEM_TITLE));
-		all.addAll(loadHeadlines(URL_MTV, PATTERN_ITEM_TITLE));
+		all.addAll(loadHeadlines(URL_MTV, PATTERN_TITLE_CDATA));
 		all.addAll(loadHeadlines(URL_SEISKA, PATTERN_SEISKA));
 		all.addAll(loadHeadlines(URL_HS, PATTERN_TITLE_CDATA));
 		all.addAll(loadHeadlines(URL_IS, PATTERN_TITLE_CDATA));
 		all.addAll(loadHeadlines(URL_YLE, PATTERN_ITEM_TITLE));
 		all.addAll(loadHeadlines(URL_IL, PATTERN_ITEM_TITLE));
-		all.addAll(loadHeadlines(URL_NYT, PATTERN_TITLE_CDATA));
 		return all;
 	}
 	
